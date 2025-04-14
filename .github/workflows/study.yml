@@ -5,17 +5,63 @@ on:
     branches: ["main"]
 
 jobs:
-  job-print:
+  job-setting:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - name: print
         run: ls -a
-      - name: create-vire-env
-        run: |
+        
+      - name: create-vite-env 
+        run: |  ##한줄일때는 <<EOL > ~ EOL대신에 echo "VITE_PORTONE_STOREID=${{ secrets.VITE_PORTONE_STOREID }}" > ./.env
           chmod 777 -R front
-          cat <<EOL > front/.env
-            VITE_PORTONE_STOREID=${{ secrets.VITE_PORTONE_STOREID }}
-            VITE_PORTONE_API_KEY=${{ secrets.VITE_PORTONE_API_KEY }}
+          cat <<EOL > front/.env  
+          VITE_PORTONE_STOREID=${{ secrets.VITE_PORTONE_STOREID }}
+          VITE_PORTONE_API_KEY=${{ secrets.VITE_PORTONE_API_KEY }}
           EOL
           cat front/.env
+          
+      - name: create-application-secret
+        run: |
+          chmod 777 -R back
+          cat <<EOL > back/src/main/resources/application-secret.yml
+          spring:
+            config:
+              activate:
+                on-profile: secret
+
+            datasource:
+              driver-class-name: com.mysql.cj.jdbc.Driver
+              url: jdbc:mysql://${{ secrets.EC2_PUBLIC_IP }}:3306/${{ secrets.DATABASE_NAME }}
+              username: ${{ secrets.DATABASE_USERNAME }}
+              password: ${{ secrets.DATABASE_PASSWORD }}
+
+            mail:
+              host: smtp.gmail.com
+              port: 587
+              username: ${{ secrets.EMAIL_USERNAME }}
+              password: ${{ secrets.EMAIL_PASSWORD }}
+              properties:
+                mail:
+                  smtp:
+                    auth: true
+                    timeout: 5000
+                    starttls:
+                      enable: true
+
+            security:
+              oauth2:
+                client:
+                  registration:
+                    google:
+                      client-id: ${{ secrets.OAUTH2_ID_GOOGLE }}
+                      client-secret: ${{ secrets.OAUTH2_SECRET_GOOGLE }}
+                    naver:
+                      client-id: eFbja8kX2crbBVBob6cH ${{ secrets.OAUTH2_ID_NAVER }}
+                      client-secret: HoboXn5qY2  ${{ secrets.OAUTH2_SECRET_NAVER }}
+
+          jwt: 
+            secret: ${{ secrets.JWT_SECRET }}
+          EOL
+          cat back/src/main/resources/application-secret.yml
