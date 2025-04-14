@@ -8,12 +8,13 @@ jobs:
   job-setting:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: 📙Checkout
+        uses: actions/checkout@v4
       
-      - name: print
+      - name: 📄print
         run: ls -a
         
-      - name: create-vite-env 
+      - name: 📄create-vite-env 
         run: |  ##한줄일때는 <<EOL > ~ EOL대신에 echo "VITE_PORTONE_STOREID=${{ secrets.VITE_PORTONE_STOREID }}" > ./.env
           chmod 777 -R front
           cat <<EOL > front/.env  
@@ -22,7 +23,7 @@ jobs:
           EOL
           cat front/.env
           
-      - name: create-application-secret
+      - name: 📄create-application-secret
         run: |
           chmod 777 -R back
           cat <<EOL > back/src/main/resources/application-secret.yml
@@ -66,7 +67,7 @@ jobs:
           EOL
           cat back/src/main/resources/application-secret.yml
 
-      - name: print-directory
+      - name: 📄print-directory
         run: |
           ls -a front
           ls -a back/src/main/resources
