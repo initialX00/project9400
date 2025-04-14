@@ -14,5 +14,5 @@ jobs:
         run: |
           chmod 777 -R front
           cd front
-          echo "VITE_PORTONE_STOREID=${{ secrets.VITE_PORTONE_STOREID }}" > ./. env
+          echo "VITE_PORTONE_STOREID=${{ secrets.VITE_PORTONE_STOREID }}" > ./.env
           cat .env
