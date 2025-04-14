@@ -82,12 +82,12 @@ jobs:
         run: |
           cd front
           docker build -t ${{ secrets.DOCKER_USERNAME }}/kiosk-react-app .
-          docker push ${{ secrets.DOCKER_USERNAME }}//kiosk-react-app:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/kiosk-react-app:latest
       - name: 🏭Build-And-Push-Spring_App
         run: |
           cd back
           docker build -t ${{ secrets.DOCKER_USERNAME }}/kiosk-spring-app .
-          docker push ${{ secrets.DOCKER_USERNAME }}//kiosk-spring-app:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/kiosk-spring-app:latest
 
   deploy:
     needs: build-push ##해당 잡이 완료되야 작동
