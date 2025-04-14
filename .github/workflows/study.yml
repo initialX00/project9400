@@ -5,13 +5,13 @@ on:
     branches: ["main"]
 
 jobs:
-  job-setting:
+  build-push:
     runs-on: ubuntu-latest
     steps:
       - name: 📙Checkout
         uses: actions/checkout@v4
       
-      - name: 📄print
+      - name: print
         run: ls -a
         
       - name: 📄create-vite-env 
@@ -66,8 +66,46 @@ jobs:
             secret: ${{ secrets.JWT_SECRET }}
           EOL
           cat back/src/main/resources/application-secret.yml
-
-      - name: 📄print-directory
+          
+      - name: print-directory
         run: |
           ls -a front
           ls -a back/src/main/resources
+
+      - name: 🌕DockerHub-LOGIN
+        uses: docker/login-action@3.4.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 🏭Build-And-Push-React_App
+        run: |
+          cd front
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/kiosk-react-app .
+          docker push ${{ secrets.DOCKER_USERNAME }}//kiosk-react-app:latest
+      - name: 🏭Build-And-Push-Spring_App
+        run: |
+          cd back
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/kiosk-spring-app .
+          docker push ${{ secrets.DOCKER_USERNAME }}//kiosk-spring-app:latest
+
+  deploy:
+    needs: build-push ##해당 잡이 완료되야 작동
+    runs-on: ubuntu-latest
+    steps:
+      - name: ssh
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          hope: ${{ secrets.EC2_PUBLIC_IP }}
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/kiosk-react-app:latest
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/kiosk-spring-app:latest
+            cd /home/ubuntu/project
+            sudo docker-compose -f project-compose.yml down
+            sudo docker-compose -f project-compose.yml up -d
+          
+
+      
+    
