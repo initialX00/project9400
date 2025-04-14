@@ -96,7 +96,7 @@ jobs:
       - name: ssh
         uses: appleboy/ssh-action@v1.0.3
         with:
-          hope: ${{ secrets.EC2_PUBLIC_IP }}
+          host: ${{ secrets.EC2_PUBLIC_IP }}
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           script: |
