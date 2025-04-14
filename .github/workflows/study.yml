@@ -9,10 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+      - name: print
+        run: ls -a
       - name: create-vire-env
         run: |
           chmod 777 -R front
-          cd front
-          echo "VITE_PORTONE_STOREID=${{ secrets.VITE_PORTONE_STOREID }}" > ./.env
-          cat .env
+          cat <<EOL > front/.env
+            VITE_PORTONE_STOREID=${{ secrets.VITE_PORTONE_STOREID }}
+            VITE_PORTONE_API_KEY=${{ secrets.VITE_PORTONE_API_KEY }}
+          EOL
+          cat front/.env
