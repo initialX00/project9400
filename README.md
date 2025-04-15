@@ -124,8 +124,9 @@
 
 1. 팀원 간의 명확한 아이디어 공유를 위해 figma와 front로 틀부터 잡는것을 목표로 했습니다.
 2. 각 개인의 GitHub Issue를 생성합니다.
-3. 작업을 완료하면 각자의 생성한 브랜치에서 코드를 push하여 Pull Requset합니다.
-4. 팀장이 코드를 확인하고 Merge합니다.
+2-1. Git Actions를 통해 secret파일들도 공유합니다.
+4. 작업을 완료하면 각자의 생성한 브랜치에서 코드를 push하여 Pull Requset합니다.
+5. 팀장이 코드를 확인하고 Merge합니다.
 
 </br></br>
 
