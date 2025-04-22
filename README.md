@@ -1,5 +1,5 @@
 
-## ✨ 프로젝트 소개 [Notion](https://www.notion.so/Project9400-1cb02444254a80b2a9a0c9a6dc9c6e23)
+## ✨ 프로젝트 소개 [Notion](https://www.notion.so/1af02444254a80d785e9edfc64be3062?pvs=4)
 
 ### 목적
 
